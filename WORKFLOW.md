@@ -222,3 +222,20 @@ Files to update in this workspace
 - `WORKFLOW.md` (this file) — updated
 - `README.md` — updated to reflect project focus
 - `tests.json` — sample JSON used as input to IDE AI
+
+Generator usage
+
+Run the generator and tests (PowerShell):
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+python .\scripts\generate_tests_from_json.py
+python manage.py test tasks
+```
+
+Commit generator and generated tests:
+
+```powershell
+git add scripts/generate_tests_from_json.py tests.json tasks/tests_auto.py WORKFLOW.md README.md
+git commit -m "chore: add test generator and generated tests"
+```
