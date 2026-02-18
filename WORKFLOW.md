@@ -223,6 +223,52 @@ Files to update in this workspace
 - `README.md` — updated to reflect project focus
 - `tests.json` — sample JSON used as input to IDE AI
 
+Repository status
+
+- `scripts/generate_tests_from_json.py` — generator script that converts `tests.json` into `tasks/tests_auto.py`.
+- `tests.json` — structured JSON test-case specification (source of truth for generation).
+- `tasks/tests_auto.py` — generated test module (created by the generator).
+- `tasks/tests.py` — optional hand-written tests (kept for reference).
+- `WORKFLOW.md`, `README.md`, `.gitignore` — docs and repo settings.
+
+Recommended workflow (current)
+
+1. Activate the project virtual environment.
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+2. Generate tests from the JSON specification.
+
+```powershell
+python .\scripts\generate_tests_from_json.py
+```
+
+3. Review `tasks/tests_auto.py`. If you prefer the generated tests as canonical tests, either:
+
+- Replace or merge into `tasks/tests.py` (recommended for a single authoritative test file), or
+- Keep `tasks/tests_auto.py` separate and ignore it in CI if you want manual tests only.
+
+4. Run the Django test suite and iterate on failures.
+
+```powershell
+python manage.py test tasks
+```
+
+5. Commit the generator and reviewed/generated tests.
+
+```powershell
+git add scripts/generate_tests_from_json.py tests.json tasks/tests_auto.py WORKFLOW.md README.md
+git commit -m "chore(tests): add generator and generated API tests"
+```
+
+Notes
+
+- The generator emits DRF `APITestCase` tests using `reverse('task-list')` and `reverse('task-detail')` where applicable.
+- Generated tests passed locally in the project venv at the time of creation.
+- You can customize `tests.json` to add more cases and re-run the generator to update `tasks/tests_auto.py`.
+
 Generator usage
 
 Run the generator and tests (PowerShell):
