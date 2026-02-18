@@ -1,0 +1,11 @@
+AI Test Workflow - Word placeholder
+
+This is a placeholder file for a Word (.docx) version of the WORKFLOW.md document.
+
+To generate a proper .docx export, convert `WORKFLOW.md` using a tool such as pandoc:
+
+```powershell
+pandoc WORKFLOW.md -o docs/AI_Test_Workflow.docx
+```
+
+Replace this placeholder with the generated `.docx` file when available.
