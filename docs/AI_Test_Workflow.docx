@@ -1,11 +1,92 @@
-AI Test Workflow - Word placeholder
+Multi-Stage AI Workflow Documentation
+AI-Powered Django API Test Generation
+1. Problem Statement
+Writing automated tests for Django REST Framework (DRF) APIs is a repetitive and time-consuming task. Developers must manually:
+•	Analyze API endpoints
+•	Design test cases
+•	Write structured test methods
+•	Validate expected responses
+•	Handle edge cases
+This process slows development and often leads to incomplete test coverage.
+The problem addressed in this project is:
+How can we automate Django API test design and implementation using a structured multi-stage AI workflow?
+The goal is to reduce manual effort while maintaining high-quality, structured test coverage.
+2. Tools Used
+This workflow integrates two different AI UX types:
+1 Chat AI (ChatGPT)
+Used to:
+•	Generate structured API test case specifications in JSON format.
+2 IDE AI (GitHub Copilot / Cursor)
+Used to:
+•	Convert structured JSON test cases into executable Django tests.py code.
+The output of the first tool becomes the input of the second tool, forming a chained AI workflow.
+3. Step-by-Step Workflow Instructions
+Stage 1: Generate Structured Test Cases (Chat AI)
+Step 1
+Provide the Task API specification to ChatGPT.
+Prompt Used:
+Generate structured API test cases for a Django REST Framework Task API.
+Model:
+- title (string, required, max_length=200)
+- description (string, optional)
+- completed (boolean, default=False)
+- created_at (auto-generated)
 
-This is a placeholder file for a Word (.docx) version of the WORKFLOW.md document.
+Endpoints:
+- POST /api/tasks/
+- GET /api/tasks/
+- GET /api/tasks/{id}/
+- PUT /api/tasks/{id}/
+- DELETE /api/tasks/{id}/
 
-To generate a proper .docx export, convert `WORKFLOW.md` using a tool such as pandoc:
+Return test cases strictly in JSON format:
 
-```powershell
-pandoc WORKFLOW.md -o docs/AI_Test_Workflow.docx
-```
+{
+  "test_cases": [
+    {
+      "name": "",
+      "method": "",
+      "endpoint": "",
+      "payload": {},
+      "expected_status": ,
+      "expected_response_contains": []
+    }
+  ]
+}
 
-Replace this placeholder with the generated `.docx` file when available.
+Include:
+- Valid task creation
+- Missing title
+- List tasks
+- Retrieve single task
+- Update task
+- Delete task
+- Invalid ID retrieval
+Stage 2: Convert JSON into Django Tests (IDE AI)
+Step 2
+Copy the JSON output from ChatGPT and paste it into VS Code with GitHub Copilot enabled.
+Prompt Used:
+
+Using the generated JSON test case specification, generate a Django REST Framework tests.py file.
+
+Requirements:
+
+- Use APITestCase.
+- Use reverse() where possible.
+- Dynamically create test data using the Task model.
+- Follow DRF best practices:
+  - Use rest_framework.status for status codes.
+  - Use format='json' in client requests.
+- Convert each JSON test case into a separate test method.
+- Name methods by converting the test case name to snake_case.
+  Example:
+    "List empty tasks" → test_list_empty_tasks
+- For list endpoints:
+  - If response.data is a dict, assert it contains a "results" key and validate response.data["results"].
+  - Otherwise treat response.data as a plain list and validate it directly.
+- Include concise assertions for:
+  - Status codes
+  - Expected response fields from the JSON spec
+- Place all code inside a properly structured tests.py file.
+
+
